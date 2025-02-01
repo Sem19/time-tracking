@@ -18,7 +18,11 @@ const useTimer = (setEntries, task, label, setTask) => {
 
     setCurrentEntry({ duration: 0 });
     clearInterval(currentEntry.intervalId);
-    setEntries((prev) => [...prev, newEntry]);
+    setEntries((prev) => {
+      const arrayEntry = [...prev, newEntry];
+      localStorage.setItem("entries", JSON.stringify(arrayEntry));
+      return arrayEntry;
+    });
   };
 
   const onStart = () => {
