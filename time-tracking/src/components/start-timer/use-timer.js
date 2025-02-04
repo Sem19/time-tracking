@@ -2,8 +2,20 @@ import { useState } from "react";
 import { convertSeconds } from "../../helpers/helpers";
 import dayjs from "dayjs";
 
+const getStorageTimer = () => {
+  const storageTimer = JSON.parse(localStorage.getItem("timer"));
+  const isTimerObject = storageTimer && typeof storageTimer === "object";
+  if (isTimerObject) {
+    const date1 = dayjs();
+    const date2 = dayjs(storageTimer.startTime);
+    const differSeconds = date1.diff(date2, "s");
+    return { ...storageTimer, duration: differSeconds };
+  }
+  return { duration: 0 };
+};
+
 const useTimer = (setEntries, task, label, setTask) => {
-  const [currentEntry, setCurrentEntry] = useState({ duration: 0 });
+  const [currentEntry, setCurrentEntry] = useState(() => getStorageTimer());
   const hourTimer = convertSeconds({ seconds: currentEntry.duration });
 
   const onStop = () => {
@@ -42,6 +54,7 @@ const useTimer = (setEntries, task, label, setTask) => {
     };
 
     setCurrentEntry(newEntry);
+    localStorage.setItem("timer", JSON.stringify(newEntry));
   };
 
   const onStartOrStop = () => {

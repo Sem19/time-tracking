@@ -4,9 +4,8 @@ import RecentEntries from "../../components/recent-entries/recent-entries.jsx";
 import TodaysSummary from "../../components/todays-summary/today-summary.jsx";
 import { useState } from "react";
 
-const localStorageEntries = localStorage.getItem("entries");
-
 const getLocalStorageEntries = () => {
+  const localStorageEntries = localStorage.getItem("entries");
   if (!localStorageEntries) return [];
   const localEntries = JSON.parse(localStorageEntries);
   if (Array.isArray(localEntries)) return localEntries;

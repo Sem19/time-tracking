@@ -6,14 +6,21 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import useTimer from "./use-timer";
 
+const getCurrentEntry = () => {
+  const storageTimer = JSON.parse(localStorage.getItem("timer"));
+  const isTimerObject = storageTimer && typeof storageTimer === "object";
+  if (isTimerObject) return storageTimer;
+  return { task: "", label: "personal" };
+};
+
 const StartTimer = ({ setEntries }) => {
-  const [task, setTask] = useState("");
-  const [label, setLabel] = useState("personal");
+  const [task, setTask] = useState(() => getCurrentEntry().task);
+  const [label, setLabel] = useState(() => getCurrentEntry().label);
+
   const { hourTimer, timer, onStartOrStop } = useTimer(
     setEntries,
     task,
