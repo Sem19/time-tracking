@@ -3,16 +3,10 @@ import StartTimer from "../../components/start-timer/start-timer.jsx";
 import RecentEntries from "../../components/recent-entries/recent-entries.jsx";
 import TodaysSummary from "../../components/todays-summary/today-summary.jsx";
 import { useState } from "react";
-
-const getLocalStorageEntries = () => {
-  const localStorageEntries = localStorage.getItem("entries");
-  if (!localStorageEntries) return [];
-  const localEntries = JSON.parse(localStorageEntries);
-  if (Array.isArray(localEntries)) return localEntries;
-  else return [];
-};
+import useLocalStorage from "../../utils/local-storage/use-local-storage.js";
 
 const TimerPage = () => {
+  const { getLocalStorageEntries } = useLocalStorage();
   const [entries, setEntries] = useState(() => getLocalStorageEntries());
 
   return (

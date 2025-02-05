@@ -1,30 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { convertSeconds } from "../../helpers/helpers";
 import dayjs from "dayjs";
-
-const getStorageTimer = () => {
-  const storageTimer = JSON.parse(localStorage.getItem("timer"));
-  const isTimerObject = storageTimer && typeof storageTimer === "object";
-  if (isTimerObject) {
-    const date1 = dayjs();
-    const date2 = dayjs(storageTimer.startTime);
-    const differSeconds = date1.diff(date2, "s");
-    return { ...storageTimer, duration: differSeconds };
-  }
-  return { duration: 0 };
-};
+import useLocalStorage from "../../utils/local-storage/use-local-storage";
 
 const useTimer = (setEntries, task, label, setTask) => {
-  const [currentEntry, setCurrentEntry] = useState(() => getStorageTimer());
+  const { getCurrentEntry, onWriteToLocalStorage } = useLocalStorage();
+  const [currentEntry, setCurrentEntry] = useState(() => getCurrentEntry());
   const hourTimer = convertSeconds({ seconds: currentEntry.duration });
+
+  const onStartTimer = () => {
+    const intervalId = setInterval(() => {
+      setCurrentEntry((prev) => ({
+        ...prev,
+        intervalId,
+        duration: prev.duration + 1,
+      }));
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (getCurrentEntry().duration) onStartTimer();
+  }, []);
 
   const onStop = () => {
     const newEntry = {
-      id: currentEntry.id,
-      startTime: currentEntry.startTime,
-      task: currentEntry.task,
-      label: currentEntry.label,
-      duration: currentEntry.duration,
+      ...currentEntry,
       endTime: dayjs(),
     };
 
@@ -32,29 +32,23 @@ const useTimer = (setEntries, task, label, setTask) => {
     clearInterval(currentEntry.intervalId);
     setEntries((prev) => {
       const arrayEntry = [...prev, newEntry];
-      localStorage.setItem("entries", JSON.stringify(arrayEntry));
+      onWriteToLocalStorage("entries", arrayEntry);
       return arrayEntry;
     });
+    localStorage.removeItem("timer");
   };
 
   const onStart = () => {
-    const intervalId = setInterval(() => {
-      setCurrentEntry((prev) => ({
-        ...prev,
-        duration: prev.duration + 1,
-      }));
-    }, 1000);
     const newEntry = {
-      id: dayjs().unix(),
-      startTime: dayjs(),
       task,
       label,
       duration: 0,
-      intervalId,
+      id: dayjs().unix(),
+      startTime: dayjs(),
     };
-
+    onStartTimer();
     setCurrentEntry(newEntry);
-    localStorage.setItem("timer", JSON.stringify(newEntry));
+    onWriteToLocalStorage("timer", newEntry);
   };
 
   const onStartOrStop = () => {

@@ -9,15 +9,10 @@ import {
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import useTimer from "./use-timer";
-
-const getCurrentEntry = () => {
-  const storageTimer = JSON.parse(localStorage.getItem("timer"));
-  const isTimerObject = storageTimer && typeof storageTimer === "object";
-  if (isTimerObject) return storageTimer;
-  return { task: "", label: "personal" };
-};
+import useLocalStorage from "../../utils/local-storage/use-local-storage";
 
 const StartTimer = ({ setEntries }) => {
+  const { getCurrentEntry } = useLocalStorage();
   const [task, setTask] = useState(() => getCurrentEntry().task);
   const [label, setLabel] = useState(() => getCurrentEntry().label);
 
