@@ -1,12 +1,17 @@
+import { signOut } from "firebase/auth";
 import { createContext, useState } from "react";
+import { auth } from "../../firebase/firebase";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
-  console.log(isLogin);
+
   const onLogin = () => setIsLogin(true);
-  const onLogOut = () => setIsLogin(false);
+
+  const onLogOut = () => {
+    signOut(auth).then(() => setIsLogin(false));
+  };
 
   return (
     <AuthContext.Provider value={{ isLogin, onLogin, onLogOut }}>

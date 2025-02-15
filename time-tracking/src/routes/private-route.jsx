@@ -4,8 +4,8 @@ import AuthContext from "../context/auth/auth.jsx";
 
 const PrivateRoute = (props) => {
   const { isLogin } = useContext(AuthContext);
-  console.log(isLogin);
+
   if (isLogin) return <Outlet {...props} />;
-  else return <Navigate to="/login" />;
+  else return <Navigate to="/login?type=signIn" />;
 };
 export default PrivateRoute;
