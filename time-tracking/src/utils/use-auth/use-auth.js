@@ -8,7 +8,7 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) onLogin();
+      if (user) onLogin(user?.email);
       setIsLoading(false);
     });
   }, []);

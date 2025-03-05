@@ -28,13 +28,13 @@ const StartTimer = ({ setEntries }) => {
   const onChangeTask = (e) => setTask(e.target.value);
   const onChangeLabel = (e) => setLabel(e.target.value);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const starCountRef = ref(database, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`);
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       console.log(data);
     });
-  }, []);
+  }, []); */
 
   return (
     <Box
