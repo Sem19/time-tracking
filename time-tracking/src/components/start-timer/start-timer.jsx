@@ -7,9 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useTimer from "./use-timer";
 import useLocalStorage from "../../utils/local-storage/use-local-storage";
+import { database } from "../../firebase/firebase";
+import { onValue, ref } from "firebase/database";
 
 const StartTimer = ({ setEntries }) => {
   const { getCurrentEntry } = useLocalStorage();
@@ -25,6 +27,14 @@ const StartTimer = ({ setEntries }) => {
 
   const onChangeTask = (e) => setTask(e.target.value);
   const onChangeLabel = (e) => setLabel(e.target.value);
+
+  useEffect(() => {
+    const starCountRef = ref(database, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+    });
+  }, []);
 
   return (
     <Box

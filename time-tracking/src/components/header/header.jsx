@@ -1,17 +1,16 @@
 import {
   Avatar,
+  Box,
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
+  Stack,
   Tooltip,
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { menuSTyle } from "./style";
 import AuthContext from "../../context/auth/auth.jsx";
-
-// import Logout from "@mui/icons-material/Logout";
-
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { onLogOut } = useContext(AuthContext);
@@ -27,25 +26,37 @@ const Header = () => {
   };
   return (
     <>
-      <Tooltip title="Account settings">
-        <IconButton onClick={handleClick} size="small">
-          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-        </IconButton>
-      </Tooltip>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        slotProps={menuSTyle}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        borderRadius="8px"
+        border="1px solid #dfe1e7"
+        margin=""
+        background="white"
       >
-        <MenuItem onClick={onLogoutMenu}>
-          <ListItemIcon>{/* <Logout fontSize="small" /> */}</ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
+        <Box></Box>
+        <Box>
+          <Tooltip title="Account settings">
+            <IconButton onClick={handleClick} size="small">
+              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            slotProps={menuSTyle}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <MenuItem onClick={onLogoutMenu}>
+              <ListItemIcon></ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Stack>
     </>
   );
 };

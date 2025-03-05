@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState({ email: "", uuid: "" });
 
   const onLogin = () => setIsLogin(true);
 

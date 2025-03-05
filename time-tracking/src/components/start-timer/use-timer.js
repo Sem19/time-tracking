@@ -25,7 +25,7 @@ const useTimer = (setEntries, task, label, setTask) => {
   const onStop = () => {
     const newEntry = {
       ...currentEntry,
-      endTime: dayjs(),
+      endTime: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
     };
 
     setCurrentEntry({ duration: 0 });
@@ -44,7 +44,7 @@ const useTimer = (setEntries, task, label, setTask) => {
       label,
       duration: 0,
       id: dayjs().unix(),
-      startTime: dayjs(),
+      startTime: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
     };
     onStartTimer();
     setCurrentEntry(newEntry);

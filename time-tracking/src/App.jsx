@@ -5,15 +5,20 @@ import TimerPage from "./pages/timer/timer-page.jsx";
 import PrivateRoute from "./routes/private-route.jsx";
 import LoginSignUpPage from "./pages/login-sign-up/login-sign-up-page.jsx";
 import useAuth from "./utils/use-auth/use-auth.js";
+import Header from "./components/header/header.jsx";
+import { useContext } from "react";
+import AuthContext from "./context/auth/auth.jsx";
 
 function App() {
   const { isLoading } = useAuth();
+  const { isLogin } = useContext(AuthContext);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Box sx={{ minHeight: "100vh", background: "#F9FAFC" }}>
+          {isLogin && <Header />}
           <Container maxWidth="lg">
             {isLoading ? (
               <p>Loading....</p>

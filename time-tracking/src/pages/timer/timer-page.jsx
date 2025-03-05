@@ -2,17 +2,33 @@ import { Stack } from "@mui/material";
 import StartTimer from "../../components/start-timer/start-timer.jsx";
 import RecentEntries from "../../components/recent-entries/recent-entries.jsx";
 import TodaysSummary from "../../components/todays-summary/today-summary.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "../../utils/local-storage/use-local-storage.js";
-import Header from "../../components/header/header.jsx";
+import { child, get, ref, set } from "firebase/database";
+import { database } from "../../firebase/firebase.js";
+
+function writeUserData(entries) {
+  set(ref(database, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`), entries);
+}
 
 const TimerPage = () => {
-  const { getLocalStorageEntries } = useLocalStorage();
-  const [entries, setEntries] = useState(() => getLocalStorageEntries());
+  const [entries, setEntries] = useState([]);
+
+  useEffect(() => {
+    const dbRef = ref(database);
+    get(child(dbRef, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`)).then((res) => {
+      if (res.exists()) {
+        setEntries(res.val());
+      }
+    });
+  }, []);
+
+  /*   useEffect(() => {
+    writeUserData(entries);
+  }, [entries]); */
 
   return (
     <Stack spacing={1}>
-      <Header />
       <StartTimer setEntries={setEntries} />
       <Stack direction={"row"} spacing={1}>
         <RecentEntries entries={entries} />

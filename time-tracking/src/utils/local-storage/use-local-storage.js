@@ -1,12 +1,18 @@
 import dayjs from "dayjs";
+import { child, get, ref } from "firebase/database";
+import { database } from "../../firebase/firebase";
 
 const useLocalStorage = () => {
-  const getLocalStorageEntries = () => {
-    const localStorageEntries = localStorage.getItem("entries");
-    if (!localStorageEntries) return [];
-    const localEntries = JSON.parse(localStorageEntries);
-    if (Array.isArray(localEntries)) return localEntries;
-    else return [];
+  const getLocalStorageEntries = async () => {
+    const dbRef = ref(database);
+    const res = await get(
+      child(dbRef, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`)
+    );
+    if (res.exists()) {
+      return res.val();
+    } else {
+      return [];
+    }
   };
 
   const getCurrentEntry = () => {
