@@ -9,21 +9,23 @@ import {
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
 import useTimer from "./use-timer";
-import useLocalStorage from "../../utils/local-storage/use-local-storage";
-import { database } from "../../firebase/firebase";
-import { onValue, ref } from "firebase/database";
 
 const StartTimer = ({ setEntries }) => {
-  const { getCurrentEntry } = useLocalStorage();
-  const [task, setTask] = useState(() => getCurrentEntry().task);
-  const [label, setLabel] = useState(() => getCurrentEntry().label);
+  const [task, setTask] = useState("");
+  const [label, setLabel] = useState("personal");
 
-  const { hourTimer, timer, onStartOrStop } = useTimer(
+  const { hourTimer, savedLabel, savedTask, timer, onStartOrStop } = useTimer(
     setEntries,
     task,
     label,
     setTask
   );
+
+  useEffect(() => {
+    if (!savedTask || !savedLabel) return;
+    setTask(savedTask);
+    setLabel(savedLabel);
+  }, [savedLabel, savedTask]);
 
   const onChangeTask = (e) => setTask(e.target.value);
   const onChangeLabel = (e) => setLabel(e.target.value);

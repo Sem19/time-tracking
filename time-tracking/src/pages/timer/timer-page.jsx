@@ -17,7 +17,6 @@ const TimerPage = () => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           setEntries(snapshot.val());
-          console.log(snapshot.val());
         } else {
           console.log("No data available");
         }

@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { convertSeconds } from "../../helpers/helpers";
 import dayjs from "dayjs";
-import useLocalStorage from "../../utils/local-storage/use-local-storage";
+import AuthContext from "../../context/auth/auth.jsx";
+import { ref, set } from "firebase/database";
+import { database } from "../../firebase/firebase.js";
+import useStorageFirebase from "../../utils/local-storage/use-storage-firebase.js";
 
 const useTimer = (setEntries, task, label, setTask) => {
-  const { getCurrentEntry, onWriteToLocalStorage } = useLocalStorage();
-  const [currentEntry, setCurrentEntry] = useState(() => getCurrentEntry());
+  const { userEmail } = useContext(AuthContext);
+  const { savedCurrentEntry } = useStorageFirebase();
+  const [currentEntry, setCurrentEntry] = useState({
+    task: "",
+    label: "personal",
+    duration: 0,
+  });
+
   const hourTimer = convertSeconds({ seconds: currentEntry.duration });
 
   const onStartTimer = () => {
@@ -19,8 +28,11 @@ const useTimer = (setEntries, task, label, setTask) => {
   };
 
   useEffect(() => {
-    if (getCurrentEntry().duration) onStartTimer();
-  }, []);
+    if (savedCurrentEntry) {
+      setCurrentEntry(savedCurrentEntry);
+      onStartTimer();
+    }
+  }, [savedCurrentEntry]);
 
   const onStop = () => {
     const newEntry = {
@@ -47,7 +59,10 @@ const useTimer = (setEntries, task, label, setTask) => {
     };
     onStartTimer();
     setCurrentEntry(newEntry);
-    onWriteToLocalStorage("timer", newEntry);
+    set(
+      ref(database, "currentEnties/" + userEmail.replaceAll(".", "_")),
+      newEntry
+    );
   };
 
   const onStartOrStop = () => {
@@ -59,6 +74,8 @@ const useTimer = (setEntries, task, label, setTask) => {
   };
 
   return {
+    savedTask: savedCurrentEntry?.task,
+    savedLabel: savedCurrentEntry?.label,
     hourTimer,
     timer: !!currentEntry.startTime,
     onStartOrStop,

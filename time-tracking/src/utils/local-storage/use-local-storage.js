@@ -15,11 +15,7 @@ const useLocalStorage = () => {
     return { task: "", label: "personal", duration: 0 };
   };
 
-  const onWriteToLocalStorage = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
-  };
-
-  return { getCurrentEntry, onWriteToLocalStorage };
+  return { getCurrentEntry };
 };
 
 export default useLocalStorage;
