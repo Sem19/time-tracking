@@ -32,7 +32,6 @@ const useTimer = (setEntries, task, label, setTask) => {
     clearInterval(currentEntry.intervalId);
     setEntries((prev) => {
       const arrayEntry = [...prev, newEntry];
-      onWriteToLocalStorage("entries", arrayEntry);
       return arrayEntry;
     });
     localStorage.removeItem("timer");

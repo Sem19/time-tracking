@@ -3,18 +3,6 @@ import { child, get, ref } from "firebase/database";
 import { database } from "../../firebase/firebase";
 
 const useLocalStorage = () => {
-  const getLocalStorageEntries = async () => {
-    const dbRef = ref(database);
-    const res = await get(
-      child(dbRef, `/entries/BFeSJfYMzCW5cSYUeJ820PEzbe02`)
-    );
-    if (res.exists()) {
-      return res.val();
-    } else {
-      return [];
-    }
-  };
-
   const getCurrentEntry = () => {
     const storageTimer = JSON.parse(localStorage.getItem("timer"));
     const isTimerObject = storageTimer && typeof storageTimer === "object";
@@ -31,7 +19,7 @@ const useLocalStorage = () => {
     localStorage.setItem(key, JSON.stringify(value));
   };
 
-  return { getLocalStorageEntries, getCurrentEntry, onWriteToLocalStorage };
+  return { getCurrentEntry, onWriteToLocalStorage };
 };
 
 export default useLocalStorage;
