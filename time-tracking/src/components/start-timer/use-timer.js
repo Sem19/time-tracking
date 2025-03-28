@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { convertSeconds } from "../../helpers/helpers";
 import dayjs from "dayjs";
 import AuthContext from "../../context/auth/auth.jsx";
-import { ref, set } from "firebase/database";
+import { ref, remove, set } from "firebase/database";
 import { database } from "../../firebase/firebase.js";
 import useStorageFirebase from "../../utils/local-storage/use-storage-firebase.js";
 
@@ -41,12 +41,14 @@ const useTimer = (setEntries, task, label, setTask) => {
     };
 
     setCurrentEntry({ duration: 0 });
+
     clearInterval(currentEntry.intervalId);
+
     setEntries((prev) => {
       const arrayEntry = [...prev, newEntry];
       return arrayEntry;
     });
-    localStorage.removeItem("timer");
+    remove(ref(database, "currentEnties/" + userEmail.replaceAll(".", "_")));
   };
 
   const onStart = () => {

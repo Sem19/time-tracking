@@ -13,6 +13,7 @@ const useStorageFirebase = () => {
     get(child(dbRef, `currentEnties/${userEmail.replaceAll(".", "_")}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
+          console.log(1);
           const currentDate = dayjs();
           const startTimeEntry = dayjs(snapshot.val().startTime);
           const differSeconds = currentDate.diff(startTimeEntry, "s");

@@ -7,6 +7,7 @@ const RecentEntriesItem = ({ task, label, startTime, endTime, duration }) => {
     dayjs(startTime).format("HH:mm"),
     dayjs(endTime).format("HH:mm"),
   ];
+
   const totalTime = convertSeconds({
     isWithOutSeconds: true,
     seconds: duration,
@@ -21,6 +22,7 @@ const RecentEntriesItem = ({ task, label, startTime, endTime, duration }) => {
       my={2}
       p={1}
       alignItems={"center"}
+      marginLeft="16px"
     >
       <Stack spacing={2}>
         <Typography variant="title">{task}</Typography>

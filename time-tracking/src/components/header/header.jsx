@@ -24,6 +24,8 @@ const Header = () => {
     handleClose();
     onLogOut();
   };
+  const { userEmail } = useContext(AuthContext);
+
   return (
     <>
       <Stack
@@ -35,7 +37,8 @@ const Header = () => {
         background="white"
       >
         <Box></Box>
-        <Box>
+        <Stack direction={"row"} alignItems={"center"} spacing={1}>
+          <Box>{userEmail}</Box>
           <Tooltip title="Account settings">
             <IconButton onClick={handleClick} size="small">
               <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
@@ -50,12 +53,9 @@ const Header = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={onLogoutMenu}>
-              <ListItemIcon></ListItemIcon>
-              Logout
-            </MenuItem>
+            <MenuItem onClick={onLogoutMenu}>Logout</MenuItem>
           </Menu>
-        </Box>
+        </Stack>
       </Stack>
     </>
   );
