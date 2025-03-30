@@ -8,6 +8,7 @@ import useAuth from "./utils/use-auth/use-auth.js";
 import Header from "./components/header/header.jsx";
 import { useContext } from "react";
 import AuthContext from "./context/auth/auth.jsx";
+import "./app.css";
 
 function App() {
   const { isLoading } = useAuth();
