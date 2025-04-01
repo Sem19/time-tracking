@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Popover from "@mui/material/Popover";
 import { DatePicker } from "antd";
-import { Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
@@ -23,7 +23,9 @@ const Filters = ({ rangeFilter, handleChangeFilters }) => {
 
   return (
     <>
-      <button onClick={handleOpen}>asdasd </button>
+      <Button onClick={handleOpen} variant="text">
+        range
+      </Button>
 
       <Popover
         sx={popupItemsCalendar}

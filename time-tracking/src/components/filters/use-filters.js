@@ -23,6 +23,12 @@ const useFilters = (entries) => {
           dayjs(entry.endTime).valueOf() <= dayjs(rangeFilter[1]).valueOf()
         );
       }
+      if (rangeFilter[0] && rangeFilter[1]) {
+        return (
+          dayjs(entry.startTime).valueOf() >= dayjs(rangeFilter[0]).valueOf() &&
+          dayjs(entry.endTime).valueOf() <= dayjs(rangeFilter[1]).valueOf()
+        );
+      }
     })
   );
 
